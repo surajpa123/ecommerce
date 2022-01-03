@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .data{
+           
+            width: 80%;
+            height: 600px;
+            margin: auto;
+            text-align: center;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+        }
+        img{
+            height: 300px;
+            width: 300px;
+            margin-top: 3%;
+        }
+        p{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 25px;
+        }
+        button{
+            font-size: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="data">
+        <button onclick="dish()">Show Availble Dishesh</button>
+        <div class="data2"></div>
+       <a href="cart.html"> <button>Go to Cart</button></a>
+    </div>
+</body>
+</html>
+<script>
+
+
+var mdata=[]
+// var mdatai=[]
+var count=0     
+    var datadiv = document.getElementById("data");
+    
+    async function dish(){
+        document.querySelector(".data2").innerHTML = ""
+        let response = await fetch ("https://www.themealdb.com/api/json/v1/1/random.php")
+        let data = await response.json();
+        let data2 = data.meals;
+        console.log(data2)
+        showdish(data2)
+    }
+
+
+    function showdish(d){
+d.map(function(elem,ind){
+
+
+        
+        var datadiv = document.querySelector(".data")
+        var data2 = document.querySelector(".data2")
+        let image = document.createElement("img");
+        var p = document.createElement("p");
+        var price = document.createElement("p");
+
+        let cart = document.createElement("button")
+        
+        // addto.addEventListener("click",addcart(ele,ind));
+        cart.textContent = "Add to Cart"
+        cart.addEventListener("click",function(){
+            addcart(elem,ind)
+        })
+        
+    
+        price.textContent ="Price - " + Math.ceil(Math.random()*1000)
+        p.innerHTML = d[0].strMeal
+        image.src = d[0].strMealThumb;
+        data2.append(image,p,price,cart)
+        datadiv.append(data2)
+})
+
+     
+    }
+
+
+
+    
+ function addcart(e,i){      
+    count++
+    mdata.push(e)
+   localStorage.setItem("cartdata", JSON.stringify(mdata)) 
+}
+
+function cartfunc(){
+    window.location.href="cart.html";
+}
+        // window.location.href = "cart.html"
+    
+    
+</script>
